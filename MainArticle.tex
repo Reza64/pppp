@@ -195,7 +195,7 @@ A team of $n$ robots are distributed randomly in the environment to cover the fi
 \qquad \qquad \qquad
 %
 \textnormal{
-By considering above explanation, we can define the discrete deployment function $\mathcal{H}$ (similar to what is defined in \cite{Yun2013}) as follows:}
+By considering the above explanation, we can define the discrete deployment function $\mathcal{H}$ (similar to what is defined in \cite{Yun2013}) as follows:}
 %
 \begin{equation}\label{eq:functional1}
 \mathcal{H}(R,W) =
@@ -204,10 +204,10 @@ d(q, r_i)\phi(q) \,,
 \end{equation}
 %
 \textnormal{
-where $d(q,r_i)$ is a function $d:\mathcal V \times \mathcal V \rightarrow \mathbb R^+$ denotes the shortest path between a vertex $q$ and robot $i$. And the set $W=\{w_1,\cdots,w_n\}$ states $n$ partitions of $G$.}
+where $d(q,r_i)$ is the function $d:\mathcal V \times \mathcal V \rightarrow \mathbb R^+$ which denotes the shortest path between a vertex $q$ and a robot $i$. And the set $W=\{w_1,\cdots,w_n\}$ states $n$ partitions of $G$.}
 \end{myprob}
 
-An intuitive perception of $\mathcal{H}$ indicates the quality of deployment, for example in figure \ref{fig:sampledeplyoment} (c) we obtained the optimum value of this function which means robots deployed at the center of dedicated partitions, whereas partitions are equally divided between robots.
+An intuitive perception of $\mathcal{H}$ indicates the quality of deployment. For example, in figure \ref{fig:sampledeplyoment} (c) we obtained the optimum value of this function, which means robots deployed at the center of dedicated partitions, whereas partitions are equally divided between robots.
 %
 In this discrete formulation (\ref{eq:functional1}), the main objective is minimizing $\mathcal{H}$ function, so that robots will be located on vertices in their corresponding partitions, $W$, where they have minimum distance to the assigned region. Later every robot is responsible about events happening in vertices within.
 
@@ -519,17 +519,46 @@ It indicates that for a node $q \in \mathcal{G}$, it is always true to say the v
 \label{sec:robotcontrol}
 %in our problem, we would derive the scripts following the shortest way from a node to another one, but here, the nodes are used for your connections and the coverage of area. then, our methodology is simplified to the wall-following based on vector fields.
 
-After the deployment problem has been solved in a certain environment, deployment paths will be generated for each robot involved in the problem. These paths will consist of the nodes through which each robot must move to reach its final position. Then, if a low-level algorithm is used to perform the movements inside each node, a higher-level algorithm can be applied to control the decisions from node to node using the label of the edges. An example will be used to explain this in more detail.
+To apply this methodology by considering a certain environment as the workspace, the first step is to create the topological map representation of this environment. Having that, it is possible to derive a solution for the deployment problem in that place. Afterwards, deployment paths will be generated for each robot involved in the problem. These paths will consist of the nodes through which each robot must move to reach its final position. Then, if a low-level algorithm is used to perform the movements inside each node, a higher-level algorithm can be applied to control the decisions from node to node using the label of the edges. An example will be used to explain this in more detail.
 
-{\color{green}
-Reza, can you give me a two robot deployment solution for this sample map? I will try to explain the movements using this
-}
+%
+%{\color{green}
+%Reza, can you give me a two robot deployment solution for this sample map? I will try to explain the movements using this
+%}
 
-Arthur, please try to explain the controller you used to move a robot from a node to another one. You can assume that I give you a \textbf{single command} (not the entire path) i.e. ''Turn left" and then you execute this command based on your wall-following algorithm.
+%Arthur, please try to explain the controller you used to move a robot from a node to another one. You can assume that I give you a \textbf{single command} (not the entire path) i.e. ''Turn left" and then you execute this command based on your wall-following algorithm.
 
-{\color{yellow}
-It's because I have to explain an example of a solution by going to my lower level algorithm. As we don't use the shortest path, like I do.
-}
+%{\color{yellow}
+%It's because I have to explain an example of a solution by going to my lower level algorithm. As we don't use the shortest path, like I do.
+%}
+%
+Most of the maps considered in this work are defined by regions similar to be corridors or blocks. These regions would be usually defined by constrained areas surrounded by some sort of structure, for example, walls, if in a building, or the sidewalk, if on the street. These structures will be a constant reference present to the sides of the robot. Having that, it is possible then to create a reference frame for the movements of the robot in this structure.
+
+The decision we made was to position the start of the reference frame on the closest point from the robot to the structure on its right side, just as is shown in Fig.~\ref{fig:navigation}. Then, with a certain distance $d_0$ to the structure being considered as an optimal placement of the robot in the environment, it is possible to create a controller for the robots to move along the maps by following these structures after sensing their position and orientation in relation to themselves.
+
+For the controller, we decided upon creating planar vector fields that would decide the movement of the robot in dependence to its orientation and distance from the reference frame. To define this field, the reference frame would be created having its X axis being tangent to the corridor, pointing in the forward direction, and the Y axis, orthogonal to it, pointing to the left wall. The robot is always in the position $X=0$.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.8\linewidth]{Figures/navigation.pdf}    % The printed column width is 8.4 cm.
+	\caption{Geometry involved in the control. From the reference frame, distance ${d_\text{0}}$ is the expected distance while ${d}$ is the actual distance of the robot. $\theta$ indicates the robot's relative orientation and $l$, the distance from the center of the robot to its control point.}
+	\label{fig:navigation}
+\end{figure}
+
+For the robot to move along the corridor by keeping itself parallel to the corridor's right side references and at the distance $d_0$ from them, the velocity vector field $\mathbf{u}_\text{c}$ is created. The field will have a component parallel to the X axis, $u_\text{X}$, which is responsible for the forward movement, and a component parallel to the Y axis, $u_\text{Y}$, responsible for placing the robot at the expected distance from the reference.
+
+$u_\text{X}$ can have a constant value, while  $u_\text{Y}$ should be proportional to how much the robot is far away from the expected position (${d_\text{0}-d}$, where $d$ is the actual distance of the robot to the reference). The full vector is then normalized and scaled to any desired velocity for the robot.
+
+To transform this vector field into the inputs of a nonholonomic robot, a static feed-back linearization controller can be used~\citep{d1995control}. Two inputs will be calculated, linear velocity $v$ and angular velocity $\omega$:
+
+\begin{equation}
+    \begin{bmatrix} v \\ \omega \end{bmatrix} = \begin{bmatrix} cos(\theta) & sin (\theta) \\ -sin (\theta)/l & cos (\theta)/l \end{bmatrix} 		\begin{bmatrix} u_\text{X} \\ u_\text{Y} \end{bmatrix} 
+    \label{eq:transformation}
+\end{equation}
+%
+where $l$ is the distance from the center of the robot to its control point and $\theta$ is the angle between the robot and the reference frame, as shown in Fig.~\ref{fig:navigation}.
+
+This basic controller would drive the robot inside the nodes of the topological maps, until it finds itself in a region that would be represented by another node. Once again, to the benefit of the block-shaped regions of the map, it is possible to detect this approximation of the robot by sensing that the structures of the corridor are shaping up to the opening of an intersection on one side of the robot. It is at this moment that the human-like instructions would have to be interpreted. The robot would follow the instruction through the usage of a different controller according to the type of instruction. For example, a ``Turn Left'' instruction would lead to the activation of a proportional controller that should turn the robot by 90 degrees to the left, so it can move forwards and enter the region of the new node, after the intersection. Movement would go by, again with the corridor following approach.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Implementation results}
