@@ -122,9 +122,9 @@ in Fig.~\ref{fig:sampledeplyoment}. As the time evolves, it can be proved that t
 \end{figure}
 
 Different extensions for this strategy were developed by several authors. These extensions can be classified according to different aspects.
-As shown in Table~\ref{tbl:classification}, several previous solutions encountered in the literature can work in convex or non-convex environment, be distributed or centralized, use Euclidean, geodesic or geodesic GVD distance metrics, work in continuous or discrete setup, and finally, be based on geometric or grid maps. 
+As shown in Table~\ref{tbl:classification}, several previous solutions encountered in the literature can work in convex or non-convex environment, be distributed or centralized, work in continuous or discrete setup, and finally, be based on geometric or grid maps. 
 
-{\color{blue} The main contribution of this work is the development of a novel, efficient and decentralized framework with mathematical guaranteed convergence to allow the deployment of multi-robot systems without the need of precise metric maps and precise localization. To the best of the authors knowledge, the proposed framework is the only one with all these features. Our work is based on the use of graph based topological maps to model the robot's workspace. Independently of the dimension of the original workspace, this strategy transforms the problem into a one dimensional problem, what highly increases the computational efficiency of the method, thus allowing for the deployment of large teams of robots in very extensive workspaces. Due to the use of a topological map, in our approach the robots may be controlled using a sequence of human like commands, such as ``turn right'', ``turn left'' and ``move straight''. Furthermore, no global metric localization is required. Our approach  was designed to be applied in structured, usually non-convex workspaces, that are suitable for topological mapping. These include metropolitan regions composed of streets and intersections, pi\-pe\-lines and energy distribution systems with several connections and bifurcations, and large buildings with intersecting corridors. Since in many applications the robotic group cannot be controlled by a centralized system, our method is fully distributed 
+{\color{blue} The main contribution of this work is the development of a novel, efficient and decentralized framework with mathematical guaranteed convergence to allow the deployment of multi-robot systems without the need of precise metric maps and precise localization. Our method can be used when the environment model is given by partially known or even manually sketched maps. To the best of the authors knowledge, the proposed framework is the only one with all these features. Our work is based on the use of graph based topological maps to model the robot's workspace. Independently of the dimension of the original workspace, this strategy transforms the problem into a one dimensional problem, what highly increases the computational efficiency of the method, thus allowing for the deployment of large teams of robots in very extensive workspaces. Due to the use of a topological map, in our approach the robots may be controlled using a sequence of human like commands, such as ``turn right'', ``turn left'' and ``move straight''. Furthermore, no global metric localization is required. Our approach  was designed to be applied in structured, usually non-convex workspaces, that are suitable for topological mapping. These include metropolitan regions composed of streets and intersections, pi\-pe\-lines and energy distribution systems with several connections and bifurcations, and large buildings with intersecting corridors. Since in many applications the robotic group cannot be controlled by a centralized system, our method is fully distributed 
 in a way each robot needs to communicate only with its neighbors. Moreover, as we will make it clear in the rest of the paper, our method is more efficient in terms of computational complexity and also in terms of the required communication bandwidth when compared to the most similar  strategies found in the literature~\cite{Durham2012,Yun2013}. Also, the proposed strategy is provably correct in the sense that it is guaranteed that the robot positions converge to the optimal locations in the topological map. This is also an important characteristic of this work since some of the other works found in the literature, for example \cite{Bhattacharya2013a}, \cite{Bhattacharya2013IJRR}, and \cite{reza2014}, do not provide such a guarantee for  discrete algorithms. As a drawback, it is important to mention that, the locations in topological map for where the robots converge do not necessarily correspond to optimal positions in the real workspace, which makes the quality of the deployment dependent on the map discretization.}
 
 Before we present our methodology, next section will present a brief review of the multi-robot deployment area. The rest of the paper is divided as follows: problem statement is in Section~\ref{sec:probstate}; Section~\ref{sec:methodology} is dedicated to present the proposed methodology, including the discretization technique, the topological map model, the methodology itself and the convergence proofs; Simulations and actual robot experiments are in Section~\ref{sec:implementation}; Finally, in Section~\ref{sec:conclusion} we conclude the paper and present some ideas for future research.
@@ -188,13 +188,13 @@ In~\cite{Bhattacharya2013a} and~\cite{Bhattacharya2013IJRR} Bhattacharya et al. 
 %
 A safe deployment problem was considered by Javanmard  and Pimenta in~\cite{reza2014}, where a new metric based on Generalized Voronoi Diagrams (GVD) (\sloppy called Geodesic GVD) yields a safe motion for a team of robots. In their implementation, a discrete approximation with graph representation is also used. 
 
-Among all previous approaches surveyed, the most similar to the one present in this paper is~\cite{Yun2013}. The authors computed the Voronoi partitions upon an undirected graph that topologically encodes the environment. However, the authors still use the original 2D metric map to control the robots, what, similarly to all other previous strategies, makes the method dependent on precise distance and localization. The approach proposed in the present paper improves on that point once all steps of the method execute on the topological map. This highly simplifies the actual robot implementation, as will be clear in the rest of the text. 
+Among all previous approaches surveyed, the most similar to the one presented in this paper is~\cite{Yun2013}. The authors computed the Voronoi partitions upon an undirected graph that topologically encodes the environment. However, the authors still use the original 2D metric map to control the robots, what, similarly to all other previous strategies, makes the method dependent on precise distance and localization. The approach proposed in the present paper improves on that point once all steps of the method execute on the topological map. This highly simplifies the actual robot implementation, as will be clear in the rest of the text. 
 %
 Moreover, as we are going to clarify in Section 4, in comparison to other similar methods, \cite{Yun2013} and \cite{Durham2012}, the proposed algorithm is more efficient in terms of running time (computational complexity) and also in the amount of data exchanged by the robots.
 Finally, in contrast to other works such as \cite{Bhattacharya2013a}, \cite{Bhattacharya2013IJRR}, and \cite{reza2014} we do show convergence guarantees valid for the presented discrete setup.
 
 %
-The main idea behind our methodology was inspired by~\cite{Arthur2015}, where a robot uses human-like commands to move in structured environments. In fact, humans do not need to have a precise metric localization to reach a destination. A simple sequence of directions such as ``turn right", ``turn left", and ``go straight" may be enough for a person to reach its destination in an urban environments or office building. Our methodology uses graph search strategies to generate such sequences of commands and deploy the robot team in the environment. 
+The main idea behind our methodology was inspired by~\cite{Arthur2015}, where a robot uses human-like commands to move in structured environments. In fact, humans do not need to have a precise metric localization to reach a destination. A simple sequence of directions such as ``turn right", ``turn left", and ``go straight" may be enough for a person to reach its destination in an urban environment or office building. Our methodology uses graph search strategies to generate such sequences of commands and deploy the robot team in the environment. 
 %
 This can be considered as a milestone in the literature of deployment. In such a way, we do not need a specific metric for the computation (as for the humans, metric localization is also not necessary). Given a robot that is able to move without the need of localization (by following walls or driveways, for example), high speed motion and fast response can be achievable. Arguably, this method is suitable for emergency responses like chasing an evader or responding to accidents. It is important to remark that the proposed technique does not need a complete and precise map as input, since it can even be applied on partially known or even manually sketched maps (see Fig. \ref{fig:map1} (a)). 
 In the next section we precisely define the problem considered in this paper.  
@@ -267,10 +267,10 @@ To construct the graph $\mathcal{G}$, differently from previous methods (\cite{Y
     \label{fig:samplemap}
 \end{figure}
  
-To map real world problems where the direction of movements in some regions are constrained, such as one-way and two-way streets in the big cities, we associate to each cell of our map a direction of movement. Regions that allow two-way movements are subdivided into two new regions. Each of this regions is then associated to a node in $\mathcal{V}$. Figure~\ref{fig:samplemap}(b) shows an example of this process. In this case, all regions of the graph are bi-directional. Therefore, each region has been separated into two regions, thus generating two nodes in the graph. The corresponding graph for this example is shown in Fig.~\ref{fig:numberedGraph}. Notice that the edges of this graph represent possible movements among the nodes. If a robot can move from a node to another, we assume that these nodes are neighbors and add a corresponding edge to $\mathcal{E}$.
+To map real world problems where the direction of movements in some regions are constrained, such as one-way and two-way streets in the big cities, we associate to each cell of our map a direction of movement. Regions that allow two-way movements are subdivided into two new regions. Each of these regions is then associated to a node in $\mathcal{V}$. Figure~\ref{fig:samplemap}(b) shows an example of this process. In this case, all regions of the graph are bi-directional. Therefore, each region has been separated into two regions, thus generating two nodes in the graph. The corresponding graph for this example is shown in Fig.~\ref{fig:numberedGraph}. Notice that the edges of this graph represent possible movements among the nodes. If a robot can move from a node to another, we assume that these nodes are neighbors and add a corresponding edge to $\mathcal{E}$.
 
 %######################################
-In a block shape symmetric map represented by a graph $\mathcal{G}$, a cost between two neighbor nodes $\sloppy c(x,y)\in \mathcal{C},~ x,y \in \mathcal{V}$ and a command $I(x,y) \in \mathcal{I}$ are assigned to the edge connecting $x$ and $y$ ($\overrightarrow{xy}$). This means that, to go from node $x$ to $y$, a robot must execute a command $I(x,y)$ that will result in a cost $c(x,y)$,
+Given the graph $\mathcal{G}$, a cost between two neighbor nodes $\sloppy c(x,y)\in \mathcal{C},~ x,y \in \mathcal{V}$ and a command $I(x,y) \in \mathcal{I}$ are assigned to the edge connecting $x$ and $y$ ($\overrightarrow{xy}$). This means that, to go from node $x$ to $y$, a robot must execute a command $I(x,y)$ that will result in a cost $c(x,y)$,
 %
 where $c:\mathcal{V} \times \mathcal{V} \rightarrow\mathbb{R}^+$. 
 Below are some properties assumed for $c$:
@@ -378,7 +378,7 @@ The main idea of our solution is to generate successive iterations in which the 
 %
 
 %To distribute the robots optimally through the environment, we define the 
-Our solution is presented in the form of a distributed control algorithm in Algorithm \ref{Alg:Alg1}, same to what is shown as Algorithm 1 in \citep{Yun2013}. In fact, our contribution is the proposition of a more efficient algorithm  (Algorithm \ref{Alg:Depl}) to find the next best node, where the robot should be relocated. Thus, our Algorithm \ref{Alg:Depl} is used in the place of the one (Algorithm 2) defined in \citep{Yun2013} for multi-robot deployment. 
+Our solution is presented in the form of a distributed control algorithm in Algorithm \ref{Alg:Alg1}, same to what is shown as Algorithm 1 in \citep{Yun2013}. In fact, an important contribution of our work is the proposition of a more efficient algorithm  (Algorithm \ref{Alg:Depl}) to find the next best node, where the robot should be relocated. Thus, our Algorithm \ref{Alg:Depl} is used in the place of the one (Algorithm 2) defined in \citep{Yun2013} for multi-robot deployment. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % algorithm 1
@@ -449,7 +449,7 @@ Note that according to Algorithm \ref{Alg:Alg1}, function $Find\_next\_best\_nod
 %---------------------------------
 %
 
-In Algorithm \ref{Alg:Depl}, the next best node is selected based on the possibility of decreasing $\mathcal{H}$ by decreasing the component of this function related to robot $r_i$, $\mathcal{H}_i$. The next node is chosen to be the direct graph neighbor node which allows for the maximum decreasing of $\mathcal H$ considering the current Voronoi subgraph as the partition associated to robot $r_i$.
+In Algorithm \ref{Alg:Depl}, the next best node is selected based on the possibility of decreasing $\mathcal{H}$ by decreasing the component of this function related to robot $r_i$, $\mathcal{H}_i$. The next node is chosen to be the directed graph neighbor node which allows for the maximum decreasing of $\mathcal H$ considering the current Voronoi subgraph as the partition associated to robot $r_i$.
 
 As an example, in Fig. \ref{fig:neighbors}, by assuming that the robot is located at node 15, according to lines 1 and 2 in Algorithm \ref{Alg:Depl}, $\mathcal{H}_i$ will be computed for the current node and its neighbors (4 and 5). Later in line 3, the node with smaller $\mathcal{H}_i$ will be selected.
 %
@@ -556,7 +556,7 @@ p_n^*
 %---------------------------------- <Def 4>-------------------
 \begin{mydef}
 \label{def4}
-A state vector $S^*$ is called a local minimum state of the $\mathcal H$ function in Eq. (\ref{eq:functional1}) if :
+A state vector $S$ is called a local minimum state of the $\mathcal H$ function in Eq. (\ref{eq:functional1}) if :
 %
 \[\mathcal H(S,\mathcal G)=\sum_{i = 1}^{n} \mathcal H_i(p_i^*,g_i) \leq \mathcal H(S^\prime,\mathcal G), ~\forall S^\prime, \]
 %
@@ -593,7 +593,7 @@ To compute the complexity of the algorithm precisely, we may consider its two ma
 % 1
 In the first part, the cost function (also the Voronoi tessellation) is computed for $p^*_i$ (line 1 in Algorithm \ref{Alg:Depl}). 
 %2
-The second part denotes the time related to the computation of the $\mathcal{H}_i$ for the graph neighbor nodes of $p^*_i$ (line 2 in Algorithm \ref{Alg:Depl}). As we mentioned, the complexity of computing $\mathcal{H}_i$ is $O(|\mathcal{V}| \log |\mathcal{V}|)$. {\color{blue}$^2$ For the types of environments that can be tackled by the proposed methodology (those composed of corridors and intersections) the maximum number of graph neighbor nodes is finite. For instance, given our simplification to block-shaped environments  we do not need to consider more than 4 graph neighbor nodes, $|\mathcal{N}_G(p^*_i)| \leq 4$.} Thus, the complexity for all the neighbor nodes is $4\cdot O(|\mathcal{V}| \log |\mathcal{V}|)$. However we can consider it as $O(|\mathcal{V}| \log |\mathcal{V}|)$.
+The second part denotes the time related to the computation of the $\mathcal{H}_i$ for the graph neighbor nodes of $p^*_i$ (line 2 in Algorithm \ref{Alg:Depl}). As we mentioned, the complexity of computing $\mathcal{H}_i$ is $O(|\mathcal{V}| \log |\mathcal{V}|)$. {\color{blue}$^2$ For the types of environments that are tackled by the proposed methodology (those composed of corridors and intersections) the maximum number of graph neighbor nodes is finite. For instance, given our simplification to block-shaped environments  we do not need to consider more than 4 graph neighbor nodes, $|\mathcal{N}_G(p^*_i)| \leq 4$.} Thus, the complexity for all the neighbor nodes is $4\cdot O(|\mathcal{V}| \log |\mathcal{V}|)$. However we can consider it as $O(|\mathcal{V}| \log |\mathcal{V}|)$.
 %
 It should be mentioned that to compute the $\mathcal{H}_i$ for neighbor nodes, the Voronoi tessellation that was computed for $p^*_i$ is used. Thus, the Voronoi tessellation is computed only once in each step. 
 
@@ -606,7 +606,7 @@ Thus, we can write that the total complexity of our algorithm is O($|\mathcal{V}
 
 %first shortage 
 {\color{blue}$^6$
-In this section We compare the complexity of our method with the most similar works in the literature, \citep{Durham2012} and \citep{Yun2013}. 
+In this section, we compare the complexity of our method with the most similar works in the literature, \citep{Durham2012} and \citep{Yun2013}. 
 %The complexity of the methods proposed in these works are $O(|\mathcal{V}|^3)$ and $O(|\mathcal{V}|^2)$, respectively.
 %
 In \cite{Yun2013}, the method looks, in the set formed by the nodes of the Voronoi subgraph $g_i$, for the next best node to be reached by robot $i$.  This requires $O(|\mathcal{V}|^2)$ operations since it is necessary to access pairs of nodes to quantify the impact of a given motion in the global cost function. 
@@ -665,8 +665,15 @@ This previous controller drives the robot inside the nodes of the topological ma
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Implementation results}
 \label{sec:implementation}
+
+
+In this section, the efficiency of the proposed method is investigated in both simulated and real robot experiments. Before showing the result, we will explain the developed distributed architecture. The high-level system of the robots is shown in Fig. \ref{fig:state}, where \textit{Control, Deployment} and \textit{Interface} modules are our three main entities. While the control module captures data and interacts with the environment, deployment module compute the next best node by relying on data received from the control module. To keep robots communication, the interface module send/receive pose information to robot $r_i$ to/from other robots through a wireless connection. The deployment module receives and sends the best node information from/to the interface module periodically. Thus $\alpha_1$ and $\alpha_2$ are thresholds for receiving and sending information from/to other robots. Also  $\Delta t $ refers to the time difference: $\Delta t=|t^{i+1}-t^i|,~ t>0$.
+
+In our implementations, we used C++ programming, ROS and Matlab for the different modules. In Fig.\ref{fig:state}, the Deployment module was implemented in Matlab, and Interface and Control modules were developed in ROS. We used ROS toolbox in Matlab to exchange information between robots.
+
+
 %
-\begin{figure}[b]
+\begin{figure}[t]
 \centering
 \includegraphics[width=0.993 \columnwidth]{Figures/Fig10.pdf}
 \caption{The high-level system of robot $i$, and the relation between three main modules in a high-level description. {\color{blue}$^9$ In order to communicate between modules (Interface and Deployment), time difference $\Delta t$ should be less than thresholds ($\alpha_1$ or $\alpha_2$).} }
@@ -674,17 +681,14 @@ This previous controller drives the robot inside the nodes of the topological ma
 \end{figure}
 %
 
-In this section, the efficiency of the proposed method is investigated in both simulated and real robot experiments. Before showing the result, we will explain the developed distributed architecture. The high-level system of the robots is shown in Fig. \ref{fig:state}, where \textit{Control, Deployment} and \textit{Interface} modules are our three main entities. While the control module captures data and interacts with the environment, deployment module compute the next best node by relying on data received from the control module. To keep robots communication, the interface module send/receive pose information to robot $r_i$ to/from other robots through a wireless connection. The deployment module receives and sends the best node information from/to the interface module periodically. Thus $\alpha_1$ and $\alpha_2$ are thresholds for receiving and sending information from/to other robots. Also  $\Delta t $ refers to the time difference: $\Delta t=|t^{i+1}-t^i|,~ t>0$.
-
-\begin{figure}[H]
+\begin{figure}[t]
 	\centering	
 	\subfigure[Sattelite view.]{\includegraphics[width=0.8\columnwidth]{Figures/Fig11-1.pdf}}
 	\subfigure[Extracted streets with directions. {\color{blue}$^{10}$ Numbers indicate the nodes of the corresponding graph. Some of the streets have two numbers which means they are bidirectional, \emph{i.e.} they have two nodes associated with them. Different directions of movement are painted in different colors: right and left are red and blue, as well as up and down with black and green color, respectively.}]{\includegraphics[width=0.8\columnwidth]{Figures/Fig11-2.pdf}}
-	\caption{The map of a neighborhood in New York grabbed from Google map.}
+	\caption{The map of a neighborhood in New York grabbed from Google maps.}
 	\label{fig:googlemap}
 \end{figure}
 
-In our implementations, we used C++ programming, ROS and Matlab for the different modules. In Fig.\ref{fig:state}, the Deployment module was implemented in Matlab, and Interface and Control modules were developed in ROS. We used ROS toolbox in Matlab to exchange information between robots.
 
 %
 \begin{figure}[t]
@@ -698,7 +702,7 @@ In our implementations, we used C++ programming, ROS and Matlab for the differen
 %*********************************
 \subsection{Simulation results}
 %
-For the simulation we selected a real outdoor map of a neighborhood in New York City from Google Maps (See Fig. \ref{fig:googlemap}). In this map, streets and blocks have a symmetric shape, which is important for metropolitan cities in order to facilitate distributing services and urban management i. e. transportation, pipeline, electricity and so on. Furthermore, this block-shape property gives us the ability to run our deployment algorithm without the need of precise localization. Thus, regardless the scale of the input map, first of all we find a topological representation of the map by extracting its streets as in Fig. \ref{fig:googlemap} (b). This is done by applying morphological operators in the image i.e. thresholding, erosion and dilation. {\color{blue}$^{12}$ We simulated 6 differential drive robots able to move along the required streets, using, for example, a curb detection and following algorithm~\cite{Hata14}. We also assume that the robots have access to perfect communication with their immediate neighbor robots.}
+For the simulation, we selected a real outdoor map of a neighborhood in New York City from Google Maps (See Fig. \ref{fig:googlemap}). In this map, streets and blocks have a symmetric shape, which is important for metropolitan cities in order to facilitate distributing services and urban management \emph{i. e.} transportation, pipeline, electricity and so on. Furthermore, this block-shape property gives us the ability to run our deployment algorithm without the need of precise localization. Thus, regardless the scale of the input map, first of all we find a topological representation of the map by extracting its streets as in Fig. \ref{fig:googlemap} (b). This is done by applying morphological operators in the image i.e. thresholding, erosion and dilation. {\color{blue}$^{12}$ We simulated 6 differential drive robots able to move along the required streets, using, for example, a curb detection and following algorithm~\cite{Hata14}. We also assume that the robots have access to perfect communication with their immediate neighbor robots.}
 
 %
 Since the direction of the streets is available in Google Maps, a directed graph $\mathcal G$ may be constructed (the method was explained in section \ref{sec:topologymap}). The command set $\mathcal{I}$ and its corresponding cost $\mathcal{C}$ used in this simulation is shown in Table \ref{tbl:commandsets}. We defined the center of density function on the node 114, such that Fig.
@@ -719,9 +723,7 @@ Command\#  & type  & Cost    \\
 \end{tabular}
 \end{table}
 
-After constructing graph $\mathcal G$, we distribute 6 robots randomly over the environment. Robots are equipped with laser sensor to move through the streets by following the curbs. 
-%
-After applying Algorithm \ref{Alg:Alg1}, robots' final locations, corresponding assigned regions and traversed paths are depicted in Fig. \ref{fig:googledeployed} (a) with different colors. The video of this simulation is available in the following link, \href{https://youtu.be/yAyio1--viA}{https://youtu.be/yAyio1--viA}.
+After constructing graph $\mathcal G$, we distribute the 6 robots randomly over the environment. After applying Algorithm \ref{Alg:Alg1}, robots' final locations, corresponding assigned regions and traversed paths are depicted in Fig. \ref{fig:googledeployed} (a) with different colors. The video of this simulation is available in the following link, \href{https://youtu.be/yAyio1--viA}{https://youtu.be/yAyio1--viA}.
 
 In order to investigate the performance of our on-line method, we performed an off-line $p$-median solution \cite{Daskin2015} which is applicable for similar purpose on graphs. In this problem, by considering a graph with $n \times m$ nodes, the objective is to assign $n$ facilities to $m$ customers. One of the methods to solve this NP-hard problem is the Mixed Integer Linear Programming (MILP) which yields the global optimum solution \cite{Edson2005}.
 
@@ -737,10 +739,10 @@ In this simulation, robots start their movement from the same initial locations 
 
 \begin{table}[t]
 \centering
-\caption{Comparison of $\mathcal{H}$ in different methods. }
+\caption{Comparison of $\mathcal{H}$ and computation time in different methods. }
 \label{tbl:comparison}
 \begin{tabular}{m{2.65cm}m{1.5cm}m{2.4cm}}
-Methodology    & Cost($*10^5$) & Time  \\
+Methodology    & Cost($*10^5$) & Computation Time  \\
  \hline\\
  Global Solution   &  1.12686 & more than a hour\\
 Proposed algorithm & 1.18786  & 0.6797 sec\\
@@ -751,7 +753,7 @@ Proposed algorithm & 1.18786  & 0.6797 sec\\
 \begin{figure}
 \centering
 \includegraphics[width=0.7 \columnwidth]{Figures/Fig14.pdf}
-\caption{Result of simulating the proposed method 100 times on New York scenario. Each column contains mean (red line), max and min of the deployment function cost.}
+\caption{Result of simulating the proposed method 100 times on New York scenario. Each column contains mean (red line), max and min of the deployment cost function.}
 \label{fig:100sim}
 \end{figure}
 
@@ -787,7 +789,7 @@ The experiments were executed in the second floor of the School of Engineering b
 
 Fig. \ref{fig:depmap} (b) shows the topological map of the environment, with 24 nodes. The corridor at the middle (nodes 4, 5, 6 and 7) is defined as the center of the density function, so the robots are expected to move toward this corridor.
 
-The initial nodes, and the final deployment locations are depicted in Fig. \ref{fig:depmapDeploy}. Robots 1, 2, and 3 started from nodes 1 to 3 (see Fig. \ref{fig:depmapDeploy} (a)), and ended on nodes 21, 13 and 17 (see Fig. \ref{fig:depmapDeploy} (b)), respectively. In the Entire execution each robot runs a single command (See Table \ref{tbl:commands}).
+The initial nodes, and the final deployment locations are depicted in Fig. \ref{fig:depmapDeploy}. Robots 1, 2, and 3 started from nodes 1 to 3 (see Fig. \ref{fig:depmapDeploy} (a)), and ended on nodes 21, 13 and 17 (see Fig. \ref{fig:depmapDeploy} (b)), respectively. In the entire execution each robot runs a single command (See Table \ref{tbl:commands}).
 
 As we mentioned, the experiment was implemented in a decentralized fashion, so that each robot moves and decides individually. The complete video of this experiment can be found in \href{https://youtu.be/3BUPjRI-x04}{https://youtu.be/3BUPjRI-x04}.
 
@@ -817,7 +819,7 @@ We derived our strategy upon the topological framework proposed by \cite{Arthur2
 %
 In comparison to two similar discrete deployment methods found in the literature (\cite{Yun2013}, \cite{Durham2012}), the proposed approach declines the computational complexity, and requires lower-bandwidth network to exchange locational information (next best node) with neighbor robots, which is usually a challenge in real experiments.
 %
-As future work, we would like to perform real experiments in multi-floor maps, combining aerial and ground based robots in the same mission. Notice that even in this complex situation the problem can be considered to a 1D problem.
+As future work, we would like to perform real experiments in multi-floor maps, combining aerial and ground based robots in the same mission. Notice that even in this complex situation the problem can be considered a 1D problem.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
